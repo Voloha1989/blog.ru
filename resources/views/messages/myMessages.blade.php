@@ -5,7 +5,11 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header"><h5>Сообщения</h5></div>
+
+                    <div class="card-header">
+                        <h5>Сообщения</h5>
+                    </div>
+
                     <div class="card-body">
 
                         @if (session('status'))
@@ -15,6 +19,7 @@
                         @endif
 
                         <table class="table table-bordered table-inverse">
+
                             <thead>
                             <tr>
                                 <th>id</th>
@@ -34,9 +39,10 @@
                                 </tr>
                                 </tbody>
                             @endforeach
-
                         </table>
+
                         <a class="btn btn-danger" href="home" role="button">Вернуться</a>
+
                     </div>
                 </div>
             </div>
