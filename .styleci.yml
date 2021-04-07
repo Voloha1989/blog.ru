@@ -4,7 +4,7 @@ php:
     - unused_use
   finder:
     not-name:
-      - message.blade.php
+      - save-message.blade.php
       - server.php
 js:
   finder:

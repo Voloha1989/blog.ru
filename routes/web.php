@@ -15,18 +15,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('message', function () {
-    return view('messages/message');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/home', 'HomeController@index');
 
-Route::post('/home', 'HomeController@index');
+    Route::get('/home', 'UserController@getListUsers');
 
-Route::get('home', 'UserController@getAll');
+    Route::post('/form-message', function () {
+        return view('messages/form-message');
+    });
 
-Route::post('/contact', 'MessageController@save')->name('contact');
+    Route::post('/save-form-message', 'MessageController@saveFormMessage')->name('save-form-message');
 
-Route::get('/myMessages', 'MessageController@getAll')->name('myMessages');
+    Route::get('/list-incoming-messages', 'MessageController@getListIncomingMessages');
+
+    Route::get('/list-incoming-messages/{id}', 'MessageController@getMessage')->name('message');
+
+    Route::delete('/delete-message/{id}', 'MessageController@deleteMessage')->name('delete-message');
+});

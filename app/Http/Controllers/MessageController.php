@@ -8,32 +8,36 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
-    public function save(Request $request) {
-
+    public function saveFormMessage(Request $request)
+    {
         $text = $request->input('text');
+        $result = $text ? "true" : null;
 
-        if(!$text) {
-            $answer = "<p style='color: red;'>Введите сообщение</p>";
-        } else {
-            $mes = new Message();
-            $mes->auth_email = $request->input('auth_email');
-            $mes->user_email = $request->input('user_email');
-            $mes->name = $request->input('name');
-            $mes->text = $request->input('text');
-            $mes->save();
-
-            $answer = "<p style='color: green;'>Сообщение отправлено</p>";
-
+        if ($result) {
+            $message = new Message();
+            $message->auth_email = $request->input('auth_email');
+            $message->user_email = $request->input('user_email');
+            $message->name = $request->input('auth_name');
+            $message->text = $text;
+            $message->save();
         }
 
-        return $answer;
+        return $result;
     }
 
-    public function getAll() {
+    public function getListIncomingMessages()
+    {
+        $listIncomingMessages = Message::where('user_email', '=', Auth::user()->email)->paginate(8);
+        return view('messages/list-incoming-messages', ['listIncomingMessages' => $listIncomingMessages]);
+    }
 
-        $listMessages = Message::all()->where('user_email', '=', Auth::user()->email);
+    public function deleteMessage($id) {
+        Message::find($id)->delete();
+        return redirect('/list-incoming-messages');
+    }
 
-        return view('messages/myMessages', ['listMessages' => $listMessages]);
-
+    public function getMessage($id) {
+        $message = Message::find($id);
+        return view('messages/detail-view-message', ['message' => $message]);
     }
 }
