@@ -27,7 +27,7 @@ class MessageController extends Controller
 
     public function getListIncomingMessages()
     {
-        $listIncomingMessages = Message::where('user_email', '=', Auth::user()->email)->paginate(8);
+        $listIncomingMessages = Message::where('user_email', '=', Auth::user()->email)->orderby('auth_email', 'ASC')->paginate(8);
         return view('messages/list-incoming-messages', ['listIncomingMessages' => $listIncomingMessages]);
     }
 

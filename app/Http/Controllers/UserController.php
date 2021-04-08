@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function getListUsers()
     {
-        $listUsers = User::where('id', '!=', Auth::id())->paginate(7);
+        $listUsers = User::where('id', '!=', Auth::id())->orderby('name', 'ASC')->paginate(7);
         return view('/home', ['listUsers' => $listUsers]);
     }
 }
